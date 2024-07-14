@@ -12,7 +12,7 @@ fn main() {
 
     // when an argument is passed to a function and it's not explicitly returned
     // you can't use the original variable anymore.
-    let mut vec1 = fill_vec(vec0.clone());
+    let mut vec1 = fill_vec(vec0.clone()); // clone the vec0, so that it can be used later 
     let vec2 = fill_vec2(&vec0);
 
     assert_eq!(vec0, vec![22, 44, 66]);

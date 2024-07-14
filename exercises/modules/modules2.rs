@@ -26,6 +26,7 @@ mod delicious_snacks {
 }
 
 fn main() {
+    // printed: favorite snacks: Pear and Cucumber
     println!(
         "favorite snacks: {} and {}",
         delicious_snacks::fruit,

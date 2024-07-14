@@ -14,14 +14,17 @@ fn main() {
     string_uppercase(data);
 
     // the ownership of data has been moved to string_uppercase
+    // so we can't use it anymore
 }
 
 // Should not take ownership
+// it takes a reference to a string, which means it borrows the string temporarily during the function call
 fn get_char(data: &String) -> char {
     data.chars().last().unwrap()
 }
 
 // Should take ownership
+// Rust deallocate the memory of the string after the function call
 fn string_uppercase(mut data: String) {
     data = data.to_uppercase();
 
