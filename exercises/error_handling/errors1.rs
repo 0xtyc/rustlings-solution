@@ -9,14 +9,17 @@
 // Execute `rustlings hint errors1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-pub fn generate_nametag_text(name: String) -> Option<String> {
+// result has type Result<T, E> 
+// - T is the type of the value that will be returned in case of success 
+// - E is the type of the error that will be returned in case of failure
+pub fn generate_nametag_text(name: String) -> Result<String, String> {
     if name.is_empty() {
         // Empty names aren't allowed.
-        None
+        Err("`name` was empty; it must be nonempty.".into()) 
+        // into() converts &'static str, into another type that is compatible with the Err type
     } else {
-        Some(format!("Hi! My name is {}", name))
+        Ok(format!("Hi! My name is {}", name))
     }
 }
 
