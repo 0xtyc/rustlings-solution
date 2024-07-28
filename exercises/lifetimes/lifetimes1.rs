@@ -8,9 +8,10 @@
 // Execute `rustlings hint lifetimes1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-fn longest(x: &str, y: &str) -> &str {
+// the lifetime annotation is to tell compiler the how the reference lifetimes are related
+// here the return value can have the lifetime of x or y, so we need to the annotation to tell the compiler
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
     if x.len() > y.len() {
         x
     } else {
