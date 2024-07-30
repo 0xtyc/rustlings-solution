@@ -12,9 +12,13 @@
 //
 // Execute `rustlings hint cow1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 use std::borrow::Cow;
+// Cow is actually an enum with two variants: Borrowed and Owned. 
+// Borrowed: Cow wraps a reference to the data
+// Owned: Cow owns the data
+// `to_mut()` is a method that returns a mutable reference to the owned data, cloning it if necessary.
+// after calling `to_mut()`, the Cow will be in the Owned state
 
 fn abs_all<'a, 'b>(input: &'a mut Cow<'b, [i32]>) -> &'a mut Cow<'b, [i32]> {
     for i in 0..input.len() {
@@ -36,6 +40,7 @@ mod tests {
         // Clone occurs because `input` needs to be mutated.
         let slice = [-1, 0, 1];
         let mut input = Cow::from(&slice[..]);
+        assert_eq!(input, Cow::Borrowed(&[-1, 0, 1]));
         match abs_all(&mut input) {
             Cow::Owned(_) => Ok(()),
             _ => Err("Expected owned value"),
@@ -47,8 +52,11 @@ mod tests {
         // No clone occurs because `input` doesn't need to be mutated.
         let slice = [0, 1, 2];
         let mut input = Cow::from(&slice[..]);
+        assert_eq!(input, Cow::Borrowed(&[0, 1, 2]));
         match abs_all(&mut input) {
-            // TODO
+            Cow::Borrowed(_)=> Ok(()),
+            _ => Err("Expected borrowed value"),
+
         }
     }
 
@@ -59,8 +67,10 @@ mod tests {
         // still owned because it was never borrowed or mutated.
         let slice = vec![0, 1, 2];
         let mut input = Cow::from(slice);
+        assert_eq!(input, Cow::<Vec<i32>>::Owned(vec![0, 1, 2]));
         match abs_all(&mut input) {
-            // TODO
+            Cow::Owned(_)=> Ok(()),
+            _ => Err("Expected borrowed value"), 
         }
     }
 
@@ -71,8 +81,10 @@ mod tests {
         // reference to the same data as before.
         let slice = vec![-1, 0, 1];
         let mut input = Cow::from(slice);
+        assert_eq!(input, Cow::<Vec<i32>>::Owned(vec![-1, 0, 1]));
         match abs_all(&mut input) {
-            // TODO
+            Cow::Owned(_)=> Ok(()),
+            _ => Err("Expected borrowed value"),  
         }
     }
 }

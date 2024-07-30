@@ -21,7 +21,6 @@
 //
 // Execute `rustlings hint arc1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
 #![forbid(unused_imports)] // Do not change this, (or the next) line.
 use std::sync::Arc;
@@ -29,15 +28,22 @@ use std::thread;
 
 fn main() {
     let numbers: Vec<_> = (0..100u32).collect();
-    let shared_numbers = // TODO
-    let mut joinhandles = Vec::new();
+    // Arc (atomic reference counting) is a thread-safe reference-counting pointer
+    // it's immutable, and it's used to share ownership between threads
+    let shared_number:Arc<Vec<_>> = Arc::new(numbers);
+    let mut joinhandles = Vec::new(); 
 
     for offset in 0..8 {
-        let child_numbers = // TODO
+        let child_numbers = shared_number.clone();
         joinhandles.push(thread::spawn(move || {
             let sum: u32 = child_numbers.iter().filter(|&&n| n % 8 == offset).sum();
             println!("Sum of offset {} is {}", offset, sum);
         }));
+        // move keyword is used to move ownership of child_numbers and offset to the closure
+        // it looks for the variables used inside from the outer scope, and move them
+        // child_numbers is not usable here anymore
+        // offset is usable becuase it's a primitive type, and it has the Copy trait, which copies the value when moved
+        offset;
     }
     for handle in joinhandles.into_iter() {
         handle.join().unwrap();
